@@ -1,0 +1,6 @@
+**Assignment 2
+Your task is to develop a modified transit connection search app. The app has a set of stops and lines. Each line contains several buses (given as a set of times when they leave the first stop). Each bus has a fixed capacity. The app supports one call "find and reserve" which finds a connection and reserves the capacity at the same time. Develop two versions of the app - in memory and persistent. Bear in mind that concurrent access to the app is possible. You can use Java or Python (if you use Python, YOU HAVE TO USE TYPE ANNOTATIONS). The way you implement persistence is up to you (you can use files, sqlite, ORM of your choice - e.g. SQLAlchemy for Python Hibernate for Java,etc.). Whatever you do, keep the layer DB-aware layer separate to search logic.
+
+Further details can be found in the design I prepared for you.
+
+Send your solution to lukotka.pts@gmail.com. The first deadline is 1.12.2021 23:59:59. The deadline for reviewed solution is 8.12.2021 23:59:59. The solutions sent later will be accepted, however the number of points awarded may be reduced.
