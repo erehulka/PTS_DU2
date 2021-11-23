@@ -33,3 +33,8 @@ class Stops:
     if stop not in self._stops:
       raise Exception("This stop name is not in dictionary of stops (name of stop: " + stop + ")")
     return self._stops[stop].reachableAt
+
+  def setStartingStop(self, stop: StopName, time: Time) -> bool:
+    if stop not in self._stops: return False
+    self._stops[stop].updateReachableAt(time, None)
+    return True
