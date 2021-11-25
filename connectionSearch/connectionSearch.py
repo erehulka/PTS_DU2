@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List, Optional, Tuple
 from connectionSearch.datatypes.lineName import LineName
 from connectionSearch.stop import Stop
 from connectionSearch.stops import Stops
@@ -11,16 +11,27 @@ class ConnectionSearch:
   _stops: Stops
   _lines: Lines
 
+  def __init__(self, stops: Stops, lines: Lines) -> None:
+    self._stops = stops
+    self._lines = lines
+
   def search(self, fr: StopName, to: StopName, time: Time):
     self._stops.setStartingStop(fr, time)
     linesFrom: List[LineName] = self._stops.getLines(fr)
     self._lines.updateReachable(linesFrom, fr, time)
 
-    reachableAfter: Tuple[StopName, Time] = self._stops.earliestReachableStopAfter(time)
-    newTime: Time = reachableAfter[1]
-    while reachableAfter[0] != to and reachableAfter is not None:
+    reachableAfter: Optional[ Tuple[StopName, Time] ] = self._stops.earliestReachableStopAfter(time)
+    if reachableAfter is None: 
+      print("Error") # TODO handling
+      return
+    while reachableAfter is not None and reachableAfter[0] != to:
+      newTime: Time = reachableAfter[1]
+      print(reachableAfter)
       linesFrom = self._stops.getLines(reachableAfter[0])
-      self._lines.updateReachable(linesFrom, fr, newTime)
+      self._lines.updateReachable(linesFrom, reachableAfter[0], newTime)
       reachableAfter = self._stops.earliestReachableStopAfter(newTime)
-
-    print(reachableAfter[1]) # TODO Finish
+    
+    if reachableAfter is not None:
+      print(reachableAfter[1])
+    
+    print("Finished") # TODO Finish
