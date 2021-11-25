@@ -17,8 +17,9 @@ class Stop:
     self._lines = lines
 
   def updateReachableAt(self, time: Time, line: Optional[LineName]) -> None:
-    self._reachableAt = time
-    self._reachableVia = line
+    if self._reachableAt is None or time < self._reachableAt:
+      self._reachableAt = time
+      self._reachableVia = line
 
   @property
   def reachableAt(self) -> Tuple[Optional[Time], Optional[LineName]]:
