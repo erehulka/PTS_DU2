@@ -19,6 +19,12 @@ class Time:
   def __ge__(self, other):
     return self.seconds >= other.seconds
 
+  def __hash__(self):
+    return self.seconds
+
+  def __eq__(self, other):
+    return self.seconds == other.seconds
+
 @dataclass
 class TimeDiff(Time):
   pass
