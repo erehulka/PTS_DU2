@@ -8,6 +8,9 @@ class Lines:
 
   _lines: Dict[LineName, Line]
 
+  def __init__(self, lines: Dict[LineName, Line]) -> None:
+    self._lines = lines
+
   def updateReachable(self, lines: List[LineName], stop: StopName, time: Time) -> None:
     for line in lines:
       if line not in self._lines: continue

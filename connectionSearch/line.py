@@ -11,13 +11,19 @@ class Line:
   _firstStop: StopName
   _lineSegments: List[LineSegment] # ordered
 
+  def __init__(self, name: LineName, times: List[Time], firstStop: StopName, lineSegments: List[LineSegment]) -> None:
+    self._name = name
+    self._startingTimes = times
+    self._firstStop = firstStop
+    self._lineSegments = lineSegments
+
   def updateReachable(self, time: Time, stop: StopName) -> None:
     startingTime: Time = self._startingTimes[-1]
     currentStop: StopName = self._firstStop
-    currentTime: Time
+    currentTime: Time = startingTime
     i: int = 0
     while currentStop != stop:
-      nextStopResult: Tuple[Time, StopName] = self._lineSegments[i].nextStop(startingTime)
+      nextStopResult: Tuple[Time, StopName] = self._lineSegments[i].nextStop(currentTime)
       currentStop = nextStopResult[1]
       currentTime = nextStopResult[0]
       i += 1
