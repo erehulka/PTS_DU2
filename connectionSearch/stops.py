@@ -8,6 +8,9 @@ class Stops:
 
   _stops: Dict[StopName, Stop]
 
+  def __init__(self, stops: Dict[StopName, Stop]) -> None:
+    self._stops = stops
+
   def earliestReachableStopAfter(self, time: Time) -> Optional[ Tuple[StopName, Time] ]:
     earliest: Optional[Time] = None
     earliestStop: Optional[StopName] = None
@@ -16,7 +19,7 @@ class Stops:
       stop: Stop = self._stops[stopName]
       reachableAt: Tuple[Optional[Time], Optional[LineName]] = stop.reachableAt
       if reachableAt[0] is not None:
-        if earliest is None or reachableAt[0] < earliest:
+        if (earliest is None or reachableAt[0] < earliest) and reachableAt[0] > time:
           earliest = reachableAt[0]
           earliestStop = stop.name
 

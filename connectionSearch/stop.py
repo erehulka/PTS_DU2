@@ -10,11 +10,11 @@ class Stop:
   _reachableVia: Optional[LineName]
   _lines: List[LineName]
 
-  def __init__(self, name: StopName) -> None:
+  def __init__(self, name: StopName, lines: List[LineName]) -> None:
     self._name = name
     self._reachableAt = None
     self._reachableVia = None
-    self._lines = list()
+    self._lines = lines
 
   def updateReachableAt(self, time: Time, line: Optional[LineName]) -> None:
     self._reachableAt = time
