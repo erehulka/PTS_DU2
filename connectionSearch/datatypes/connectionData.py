@@ -1,3 +1,4 @@
+from typing import List
 from connectionSearch.datatypes.stopName import StopName
 from connectionSearch.datatypes.time import Time
 from dataclasses import dataclass
@@ -8,3 +9,4 @@ class ConnectionData:
   to: StopName
   startTime: Time
   arrivalTime: Time
+  stops: List[StopName]
