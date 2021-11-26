@@ -41,3 +41,7 @@ class Stops:
     if stop not in self._stops: return False
     self._stops[stop].updateReachableAt(time, None)
     return True
+
+  def clean(self) -> None:
+    for stop in self._stops.values():
+      stop.clean()

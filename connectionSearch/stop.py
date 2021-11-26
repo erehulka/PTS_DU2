@@ -21,6 +21,10 @@ class Stop:
       self._reachableAt = time
       self._reachableVia = line
 
+  def clean(self) -> None:
+    self._reachableAt = None
+    self._reachableVia = None
+
   @property
   def reachableAt(self) -> Tuple[Optional[Time], Optional[LineName]]:
     return (self._reachableAt, self._reachableVia)
