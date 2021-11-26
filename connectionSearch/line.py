@@ -53,3 +53,12 @@ class Line:
       if not nextStopResult[2]:
         break
       i += 1
+
+  def updateCapacityAndGetPreviousStop(self, stop: StopName, time: Time) -> StopName:
+    for i in range(len(self._lineSegments)):
+      if self._lineSegments[i].nextStopOnly == stop:
+        self._lineSegments[i].incrementCapacity(time)
+        if i == 0: return self._firstStop
+        return self._lineSegments[i-1].nextStopOnly
+
+    raise Exception("No such stop found")

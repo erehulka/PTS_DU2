@@ -15,3 +15,9 @@ class Lines:
     for line in lines:
       if line not in self._lines: continue
       self._lines[line].updateReachable(time, stop)
+
+  def updateCapacityAndGetPreviousStop(self, line: LineName, stop: StopName, time: Time) -> StopName:
+    if line not in self._lines:
+      raise Exception("Line " + line.name + " passed as an argument was not found.")
+
+    return self._lines[line].updateCapacityAndGetPreviousStop(stop, time)

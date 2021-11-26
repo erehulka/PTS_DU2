@@ -32,3 +32,14 @@ class LineSegment:
       return (nextStopResult[0], nextStopResult[1], False)
     self._nextStop.updateReachableAt(nextStopResult[0], self._lineName)
     return (nextStopResult[0], nextStopResult[1], True)
+
+  def incrementCapacity(self, time: Time) -> None:
+    startTime: Time = time - self._timeToNextStop
+    if startTime not in self._numberOfPassengers:
+      self._numberOfPassengers[startTime] = 0
+
+    self._numberOfPassengers[startTime] += 1
+
+  @property
+  def nextStopOnly(self) -> StopName:
+    return self._nextStop.name
