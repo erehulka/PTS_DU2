@@ -1,10 +1,9 @@
 from unittest import TestCase
 from connectionSearch.datatypes.lineName import LineName
 from connectionSearch.datatypes.stopName import StopName
-from connectionSearch.line import Line
-from connectionSearch.lines import Lines
+from connectionSearch.lines import LinesFactory
+from connectionSearch.line import LineFactory
 from connectionSearch.datatypes.time import Time, TimeDiff
-from connectionSearch.lineSegment import LineSegment
 
 class FakeLine:
 
@@ -27,11 +26,16 @@ class FakeLine:
 class TestLines(TestCase):
 
   def setUp(self):
-    self.lines = Lines({
+    factory = LinesFactory()
+    self.lines = factory.create({
         LineName("Line A"): FakeLine(LineName("Line A"), StopName("First A")),
         LineName("Line B"): FakeLine(LineName("Line B"), StopName("First B")),
     })
 
   def test_update_reachable(self):
+    # Test if there is no exception
     self.lines.updateReachable([LineName("Line A"), LineName("Fake Line")], StopName("First A"), Time(10))
     self.lines.updateReachable([LineName("Line A"), LineName("Fake Line")], StopName("First Fake"), Time(10))
+
+  def test_update_capacity_and_get_previous_stop(self):
+    pass
