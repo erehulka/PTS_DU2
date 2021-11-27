@@ -1,17 +1,38 @@
 from typing import List, Tuple
+
 from connectionSearch.datatypes.lineName import LineName
 from connectionSearch.datatypes.stopName import StopName
 from connectionSearch.datatypes.time import Time, TimeDiff
-from connectionSearch.lineSegment import LineSegment
 
-class Line:
+from connectionSearch.lineSegment import LineSegmentInterface
+
+class LineInterface:
 
   _name: LineName
   _startingTimes: List[Time] # sorted
   _firstStop: StopName
-  _lineSegments: List[LineSegment] # ordered
+  _lineSegments: List[LineSegmentInterface]  # ordered
 
-  def __init__(self, name: LineName, times: List[Time], firstStop: StopName, lineSegments: List[LineSegment]) -> None:
+  def updateReachable(self, time: Time, stop: StopName) -> None:
+    pass
+
+  def tryEarlier(self, time: Time, duration: TimeDiff, currentTimeI: int) -> bool:
+    pass
+
+  def updateReachables(self, i: int, time: Time) -> None:
+    pass
+
+  def updateCapacityAndGetPreviousStop(self, stop: StopName, time: Time) -> StopName:
+    pass
+
+class LineFactory:
+
+  def create(self, name: LineName, times: List[Time], firstStop: StopName, lineSegments: List[LineSegmentInterface]) -> LineInterface:
+    return Line(name, times, firstStop, lineSegments)
+
+class Line(LineInterface):
+
+  def __init__(self, name: LineName, times: List[Time], firstStop: StopName, lineSegments: List[LineSegmentInterface]) -> None:
     self._name = name
     self._startingTimes = times
     self._firstStop = firstStop

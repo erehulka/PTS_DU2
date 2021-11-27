@@ -1,14 +1,40 @@
 from typing import List, Optional, Tuple
+
 from connectionSearch.datatypes.lineName import LineName
 from connectionSearch.datatypes.stopName import StopName
 from connectionSearch.datatypes.time import Time
 
-class Stop:
+class StopInterface:
 
   _name: StopName
   _reachableAt: Optional[Time]
   _reachableVia: Optional[LineName]
   _lines: List[LineName]
+
+  def updateReachableAt(self, time: Time, line: Optional[LineName]) -> None:
+    pass
+
+  def clean(self) -> None:
+    pass
+
+  @property
+  def reachableAt(self) -> Tuple[Optional[Time], Optional[LineName]]:
+    pass
+
+  @property
+  def lines(self) -> List[LineName]:
+    pass
+
+  @property
+  def name(self) -> StopName:
+    pass
+
+class StopFactory:
+
+  def create(self, name: StopName, lines: List[LineName]) -> StopInterface:
+    return Stop(name, lines)
+
+class Stop(StopInterface):
 
   def __init__(self, name: StopName, lines: List[LineName]) -> None:
     self._name = name

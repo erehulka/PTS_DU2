@@ -1,18 +1,19 @@
 from typing import List, Optional, Tuple
+
 from connectionSearch.datatypes.connectionData import ConnectionData
 from connectionSearch.datatypes.lineName import LineName
-from connectionSearch.stop import Stop
-from connectionSearch.stops import Stops
-from connectionSearch.lines import Lines
 from connectionSearch.datatypes.stopName import StopName
 from connectionSearch.datatypes.time import Time
 
+from connectionSearch.stops import StopsInterface
+from connectionSearch.lines import LinesInterface
+
 class ConnectionSearch:
 
-  _stops: Stops
-  _lines: Lines
+  _stops: StopsInterface
+  _lines: LinesInterface
 
-  def __init__(self, stops: Stops, lines: Lines) -> None:
+  def __init__(self, stops: StopsInterface, lines: LinesInterface) -> None:
     self._stops = stops
     self._lines = lines
 
