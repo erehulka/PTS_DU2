@@ -4,11 +4,11 @@ from connectionSearch.datatypes.lineName import LineName
 from connectionSearch.datatypes.stopName import StopName
 from connectionSearch.datatypes.time import Time
 
-from connectionSearch.line import Line
+from connectionSearch.line import LineInterface
 
 class LinesInterface:
 
-  _lines: Dict[LineName, Line]
+  _lines: Dict[LineName, LineInterface]
 
   def updateReachable(self, lines: List[LineName], stop: StopName, time: Time) -> None:
     pass
@@ -18,7 +18,7 @@ class LinesInterface:
 
 class LinesFactory:
 
-  def create(self, lines: Dict[LineName, Line]) -> LinesInterface:
+  def create(self, lines: Dict[LineName, LineInterface]) -> LinesInterface:
     return Lines(lines)
 
   def createDB(self) -> LinesInterface:
@@ -26,7 +26,7 @@ class LinesFactory:
 
 class Lines(LinesInterface):
 
-  def __init__(self, lines: Dict[LineName, Line]) -> None:
+  def __init__(self, lines: Dict[LineName, LineInterface]) -> None:
     self._lines = lines
 
   def updateReachable(self, lines: List[LineName], stop: StopName, time: Time) -> None:

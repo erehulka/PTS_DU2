@@ -25,6 +25,9 @@ class StopsInterface:
   def clean(self) -> None:
     pass
 
+  def getByName(self, name: StopName) -> StopInterface:
+    pass
+
 class StopsFactory:
 
   def create(self, stops: Dict[StopName, StopInterface]) -> StopsInterface:
@@ -73,6 +76,11 @@ class Stops(StopsInterface):
     for stop in self._stops.values():
       stop.clean()
 
+  def getByName(self, name: StopName) -> StopInterface:
+    if name not in self._stops:
+      raise Exception("This stop name is not in dictionary of stops (name of stop: " + name + ")")
+    return self._stops[name]
+
 class StopsDB(Stops):
 
   def __init__(self) -> None:
@@ -100,3 +108,9 @@ class StopsDB(Stops):
   def clean(self) -> None:
     self._stops = dict()
     # TODO Persist changes to DB
+
+  def getByName(self, name: StopName) -> StopInterface:
+    if name not in self._stops:
+      # TODO Vytiahni Stop z DB
+      pass
+    return self._stops[name]
