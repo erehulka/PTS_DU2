@@ -23,6 +23,7 @@ class Time:
     return self.seconds
 
   def __eq__(self, other):
+    if other is None: return False
     return self.seconds == other.seconds
 
 @dataclass
