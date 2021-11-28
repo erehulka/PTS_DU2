@@ -45,10 +45,11 @@ class TestStops(TestCase):
 
   def assert_exception(self, callable, *args, **kwargs):
     try:
-      callable(args, kwargs)
-      self.assertEqual(True, False)
+      callable(*args, **kwargs)
     except:
       self.assertEqual(True, True)
+      return
+    self.assertEqual(True, False)
 
   def setUp(self):
     factory = StopsFactory()

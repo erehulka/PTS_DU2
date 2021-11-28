@@ -2,7 +2,6 @@ from unittest import TestCase
 from connectionSearch.datatypes.lineName import LineName
 from connectionSearch.datatypes.stopName import StopName
 from connectionSearch.lines import LinesFactory
-from connectionSearch.line import LineFactory
 from connectionSearch.datatypes.time import Time, TimeDiff
 
 class FakeLine:
@@ -25,6 +24,14 @@ class FakeLine:
 
 class TestLines(TestCase):
 
+  def assert_exception(self, callable, *args, **kwargs):
+    try:
+      callable(*args, **kwargs)
+    except:
+      self.assertEqual(True, True)
+      return
+    self.assertEqual(True, False)
+
   def setUp(self):
     factory = LinesFactory()
     self.lines = factory.create({
@@ -38,4 +45,7 @@ class TestLines(TestCase):
     self.lines.updateReachable([LineName("Line A"), LineName("Fake Line")], StopName("First Fake"), Time(10))
 
   def test_update_capacity_and_get_previous_stop(self):
-    pass
+    # We are testing update capacity in testLine.py, so only checking exceptions
+    self.assert_exception(self.lines.updateCapacityAndGetPreviousStop, LineName("Fake Line"), StopName("First A"), Time(10))
+
+  # MOST of Lines class works with Line class, which we tested in testLine.py
