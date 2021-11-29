@@ -4,7 +4,10 @@ from connectionSearch.datatypes.time import Time
 from connectionSearch.datatypes.stopName import StopName
 from connectionSearch.datatypes.lineName import LineName
 
-from connectionSearch.stop import StopInterface
+from connectionSearch.stop import StopFactory, StopInterface
+
+from database.selects import select_line_by_name_dataset, select_stop_by_name_dataset
+from database.setup import StopDB
 
 class StopsInterface:
 
@@ -33,8 +36,8 @@ class StopsFactory:
   def create(self, stops: Dict[StopName, StopInterface]) -> StopsInterface:
     return Stops(stops)
 
-  def createDB(self) -> StopsInterface:
-    return StopsDB()
+  def createDB(self, dataset: str) -> StopsInterface:
+    return StopsDB(dataset)
 
 class Stops(StopsInterface):
 
@@ -83,25 +86,30 @@ class Stops(StopsInterface):
 
 class StopsDB(Stops):
 
-  def __init__(self) -> None:
+  _dataset: str
+
+  def __init__(self, dataset: str) -> None:
     self._stops = dict()
+    self._dataset = dataset
+
+  def get_from_db(self, name: str) -> None:
+    stop: StopDB = select_line_by_name_dataset(name, self._dataset)
+    stopFactory = StopFactory()
+    self._stops[StopName(name)] = StopDB.createFromDb(stop)
 
   def getLines(self, stop: StopName) -> List[LineName]:
     if stop not in self._stops:
-      # TODO Vytiahni Stop z DB
-      pass
+      self.get_from_db(stop.name)
     return self._stops[stop].lines
 
   def getReachableAt(self, stop: StopName) -> Tuple[Optional[Time], Optional[LineName]]:
     if stop not in self._stops:
-      # TODO Vytiahni Stop z DB
-      pass
+      self.get_from_db(stop.name)
     return self._stops[stop].reachableAt
 
   def setStartingStop(self, stop: StopName, time: Time) -> bool:
     if stop not in self._stops:
-      # TODO Vytiahni Stop z DB
-      pass
+      self.get_from_db(stop.name)
     self._stops[stop].updateReachableAt(time, None)
     return True
 
@@ -111,6 +119,5 @@ class StopsDB(Stops):
 
   def getByName(self, name: StopName) -> StopInterface:
     if name not in self._stops:
-      # TODO Vytiahni Stop z DB
-      pass
+      self.get_from_db(name.name)
     return self._stops[name]

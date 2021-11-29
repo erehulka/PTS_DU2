@@ -4,7 +4,10 @@ from connectionSearch.datatypes.lineName import LineName
 from connectionSearch.datatypes.stopName import StopName
 from connectionSearch.datatypes.time import Time, TimeDiff
 
-from connectionSearch.lineSegment import LineSegmentInterface
+from connectionSearch.lineSegment import LineSegmentFactory, LineSegmentInterface
+from connectionSearch.stops import StopsInterface
+
+from database.setup import LineDB
 
 class LineInterface:
 
@@ -29,6 +32,19 @@ class LineFactory:
 
   def create(self, name: LineName, times: List[Time], firstStop: StopName, lineSegments: List[LineSegmentInterface]) -> LineInterface:
     return Line(name, times, firstStop, lineSegments)
+
+  def createFromDb(self, line: LineDB, stops: StopsInterface) -> LineInterface:
+    times: List[Time] = list()
+    for timeDB in line.times:
+      times.append(Time(timeDB.time))
+
+    segments: List[LineSegmentInterface] = list()
+    line_segment_factory = LineSegmentFactory()
+    for segmentDB in line.line_segments:
+      segments.append(line_segment_factory.create(segmentDB.timeToNext, segmentDB.capacity, 
+        line.name, StopName(line.next), stops))
+
+    return Line(LineName(line.name), times, StopName(line.first_stop), segments)
 
 class Line(LineInterface):
 

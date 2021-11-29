@@ -4,6 +4,8 @@ from connectionSearch.datatypes.lineName import LineName
 from connectionSearch.datatypes.stopName import StopName
 from connectionSearch.datatypes.time import Time
 
+from database.setup import StopDB
+
 class StopInterface:
 
   _name: StopName
@@ -33,6 +35,12 @@ class StopFactory:
 
   def create(self, name: StopName, lines: List[LineName]) -> StopInterface:
     return Stop(name, lines)
+
+  def createFromDB(self, stop: StopDB) -> StopInterface:
+    lines: List[LineName] = list()
+    for line in stop.lines:
+      lines.append(LineName(line.name))
+    return Stop(StopName(stop.name), lines)
 
 class Stop(StopInterface):
 
