@@ -3,9 +3,9 @@ from connectionSearch.connectionSearch import ConnectionSearch
 from connectionSearch.datatypes.lineName import LineName
 from connectionSearch.datatypes.stopName import StopName
 from connectionSearch.datatypes.time import Time, TimeDiff
-from connectionSearch.line import Line
-from connectionSearch.lines import Lines
-from connectionSearch.lineSegment import LineSegment
+from connectionSearch.line import LineFactory
+from connectionSearch.lines import LinesFactory
+from connectionSearch.lineSegment import LineSegmentFactory
 from connectionSearch.stop import StopFactory
 from connectionSearch.stops import StopsFactory, StopsInterface
 
@@ -25,20 +25,23 @@ def easyConfig() -> ConnectionSearch:
       }
   )
 
+  linesFactory = LinesFactory()
+  lineSegmentFactory = LineSegmentFactory()
+  lineFactory = LineFactory()
   return ConnectionSearch(
     stops,
-    Lines(
+    linesFactory.create(
       {
-        LineName("1"): Line(
+        LineName("1"): lineFactory.create(
           LineName("1"), 
           [Time(10), Time(20), Time(30)], 
           StopName("A"),
           [
-            LineSegment(TimeDiff(2), 10, LineName("1"), StopName("B"), stops),
-            LineSegment(TimeDiff(3), 10, LineName("1"), StopName("C"), stops),
-            LineSegment(TimeDiff(4), 10, LineName("1"), StopName("D"), stops),
-            LineSegment(TimeDiff(5), 10, LineName("1"), StopName("E"), stops),
-            LineSegment(TimeDiff(6), 10, LineName("1"), StopName("F"), stops),
+            lineSegmentFactory.create(TimeDiff(2), 10, LineName("1"), StopName("B"), stops),
+            lineSegmentFactory.create(TimeDiff(3), 10, LineName("1"), StopName("C"), stops),
+            lineSegmentFactory.create(TimeDiff(4), 10, LineName("1"), StopName("D"), stops),
+            lineSegmentFactory.create(TimeDiff(5), 10, LineName("1"), StopName("E"), stops),
+            lineSegmentFactory.create(TimeDiff(6), 10, LineName("1"), StopName("F"), stops),
           ]
         )
       }
@@ -61,27 +64,30 @@ def crossConfig() -> ConnectionSearch:
       }
   )
   
+  linesFactory = LinesFactory()
+  lineSegmentFactory = LineSegmentFactory()
+  lineFactory = LineFactory()
   return ConnectionSearch(
       stops,
-      Lines(
+      linesFactory.create(
           {
-              LineName("1"): Line(
+              LineName("1"): lineFactory.create(
                   LineName("1"),
                   [Time(10), Time(20), Time(30)],
                   StopName("A"),
                   [
-                      LineSegment(TimeDiff(2), 10, LineName("1"), StopName("B"), stops),
-                      LineSegment(TimeDiff(3), 10, LineName("1"), StopName("C"), stops)
+                      lineSegmentFactory.create(TimeDiff(2), 10, LineName("1"), StopName("B"), stops),
+                      lineSegmentFactory.create(TimeDiff(3), 10, LineName("1"), StopName("C"), stops)
                   ]
               ),
-              LineName("2"): Line(
+              LineName("2"): lineFactory.create(
                 LineName("2"),
                 [Time(13), Time(25), Time(40)],
                 StopName("D"),
                 [
-                    LineSegment(TimeDiff(4), 10, LineName("2"), StopName("B"), stops),
-                    LineSegment(TimeDiff(10), 10, LineName("2"), StopName("E"), stops),
-                    LineSegment(TimeDiff(1), 10, LineName("2"), StopName("F"), stops)
+                    lineSegmentFactory.create(TimeDiff(4), 10, LineName("2"), StopName("B"), stops),
+                    lineSegmentFactory.create(TimeDiff(10), 10, LineName("2"), StopName("E"), stops),
+                    lineSegmentFactory.create(TimeDiff(1), 10, LineName("2"), StopName("F"), stops)
                 ]
               )
           }
@@ -121,58 +127,61 @@ def pragueMetro() -> ConnectionSearch:
       }
   )
 
+  linesFactory = LinesFactory()
+  lineSegmentFactory = LineSegmentFactory()
+  lineFactory = LineFactory()
   return ConnectionSearch(
     stops,
-    Lines(
+    linesFactory.create(
       {
-        LineName("A"): Line(
+        LineName("A"): lineFactory.create(
           LineName("A"),
           [Time(i) for i in range(0,200,10)],
           StopName("Hradcanska"),
           [
-            LineSegment(
+            lineSegmentFactory.create(
               TimeDiff(3),
               10,
               LineName("A"),
               StopName("Malostranska"),
               stops
             ),
-            LineSegment(
+            lineSegmentFactory.create(
                 TimeDiff(4),
                 10,
                 LineName("A"),
                 StopName("Staromestska"),
                 stops
             ),
-            LineSegment(
+            lineSegmentFactory.create(
                 TimeDiff(2),
                 10,
                 LineName("A"),
                 StopName("Mustek"),
                 stops
             ),
-            LineSegment(
+            lineSegmentFactory.create(
                 TimeDiff(8),
                 10,
                 LineName("A"),
                 StopName("Muzeum"),
                 stops
             ),
-            LineSegment(
+            lineSegmentFactory.create(
                 TimeDiff(5),
                 10,
                 LineName("A"),
                 StopName("Namesti Miru"),
                 stops
             ),
-            LineSegment(
+            lineSegmentFactory.create(
                 TimeDiff(3),
                 10,
                 LineName("A"),
                 StopName("Jiriho z Podebrad"),
                 stops
             ),
-            LineSegment(
+            lineSegmentFactory.create(
                 TimeDiff(4),
                 10,
                 LineName("A"),
@@ -181,54 +190,54 @@ def pragueMetro() -> ConnectionSearch:
             ),
           ]
         ),
-        LineName("B"): Line(
+        LineName("B"): lineFactory.create(
             LineName("B"),
             [Time(i) for i in range(0, 200, 10)],
             StopName("Andel"),
             [
-                LineSegment(
+                lineSegmentFactory.create(
                     TimeDiff(5),
                     10,
                     LineName("B"),
                     StopName("Karlovo namesti"),
                     stops
                 ),
-                LineSegment(
+                lineSegmentFactory.create(
                     TimeDiff(10),
                     10,
                     LineName("B"),
                     StopName("Narodni Trida"),
                 stops
                 ),
-                LineSegment(
+                lineSegmentFactory.create(
                     TimeDiff(2),
                     10,
                     LineName("B"),
                     StopName("Mustek"),
                     stops
                 ),
-                LineSegment(
+                lineSegmentFactory.create(
                     TimeDiff(3),
                     10,
                     LineName("B"),
                     StopName("Namesti Republiky"),
                     stops
                 ),
-                LineSegment(
+                lineSegmentFactory.create(
                     TimeDiff(5),
                     10,
                     LineName("B"),
                     StopName("Florenc"),
                     stops
                 ),
-                LineSegment(
+                lineSegmentFactory.create(
                     TimeDiff(3),
                     10,
                     LineName("B"),
                     StopName("Krizikova"),
                     stops
                 ),
-                LineSegment(
+                lineSegmentFactory.create(
                     TimeDiff(9),
                     10,
                     LineName("B"),
@@ -237,61 +246,61 @@ def pragueMetro() -> ConnectionSearch:
                 ),
             ]
         ),
-        LineName("C"): Line(
+        LineName("C"): lineFactory.create(
             LineName("C"),
             [Time(i) for i in range(0, 200, 10)],
             StopName("Vysehrad"),
             [
-                LineSegment(
+                lineSegmentFactory.create(
                     TimeDiff(5),
                     10,
                     LineName("C"),
                     StopName("IP Pavlova"),
                     stops
                 ),
-                LineSegment(
+                lineSegmentFactory.create(
                     TimeDiff(5),
                     10,
                     LineName("C"),
                     StopName("Muzeum"),
                     stops
                 ),
-                LineSegment(
+                lineSegmentFactory.create(
                     TimeDiff(1),
                     10,
                     LineName("C"),
                     StopName("Hlavni nadrazi"),
                     stops
                 ),
-                LineSegment(
+                lineSegmentFactory.create(
                     TimeDiff(2),
                     10,
                     LineName("C"),
                     StopName("Florenc"),
                     stops
                 ),
-                LineSegment(
+                lineSegmentFactory.create(
                     TimeDiff(3),
                     10,
                     LineName("C"),
                     StopName("Vltavska"),
                     stops
                 ),
-                LineSegment(
+                lineSegmentFactory.create(
                     TimeDiff(2),
                     10,
                     LineName("C"),
                     StopName("Nadrazi Holesovice"),
                     stops
                 ),
-                LineSegment(
+                lineSegmentFactory.create(
                     TimeDiff(1),
                     10,
                     LineName("C"),
                     StopName("Kobylisy"),
                     stops
                 ),
-                LineSegment(
+                lineSegmentFactory.create(
                     TimeDiff(9),
                     10,
                     LineName("C"),
