@@ -34,7 +34,8 @@ class TestLineSegment(TestCase):
   def test_next_stop(self):
     self.assertTupleEqual(self.segment.nextStop(Time(10)), (Time(20), StopName("Test Stop"))) # straightforward...
   
-  def test_increment_capacity(self):
+  def test_increment_capacity(self):  # see how incrementCapacity works, it takes time as (time - timeToNext), so that is why
+                                      # there is passenger at time 0 when we incremented at time 10
     self.segment.incrementCapacity(Time(10))
     self.assertEqual(self.segment._numberOfPassengers, {Time(0): 1})
     self.segment.incrementCapacity(Time(15))

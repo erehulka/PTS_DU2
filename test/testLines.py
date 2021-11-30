@@ -24,7 +24,7 @@ class FakeLine:
 
 class TestLines(TestCase):
 
-  def assert_exception(self, callable, *args, **kwargs):
+  def assert_exception(self, callable, *args, **kwargs): # Assert there will be exception
     try:
       callable(*args, **kwargs)
     except:

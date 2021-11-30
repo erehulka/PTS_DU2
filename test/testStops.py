@@ -5,7 +5,7 @@ from connectionSearch.datatypes.stopName import StopName
 from connectionSearch.stops import StopsFactory
 from connectionSearch.datatypes.time import Time
 
-class MockStop:
+class MockStop: # Mock of stop class, so we know if it is cleaned by clean()
 
   _name: StopName
   _isCleaned: bool
@@ -43,7 +43,7 @@ class MockStop:
 
 class TestStops(TestCase):
 
-  def assert_exception(self, callable, *args, **kwargs):
+  def assert_exception(self, callable, *args, **kwargs): # Method to assert there will be exception
     try:
       callable(*args, **kwargs)
     except:
@@ -61,7 +61,7 @@ class TestStops(TestCase):
       }
     )
 
-  def test_starting_stop(self):
+  def test_starting_stop(self): # Test if it possible to set starting stop with real and fake
     self.assertEqual(self.stops.setStartingStop(StopName("X"), Time(0)), False)
     self.assertEqual(self.stops.setStartingStop(StopName("A"), Time(2)), True)
 
@@ -73,7 +73,9 @@ class TestStops(TestCase):
     self.assertEqual(self.stops.getLines(StopName("A")), [LineName("Test A")])
     self.assert_exception(self.stops.getLines, StopName("X"))
 
-  def test_earliest_reachable_stop_after(self):
+  # until now straightforward testing
+
+  def test_earliest_reachable_stop_after(self): # Testing earliest reachable stop by changing reachableAt of MockStops
     self.assertEqual(self.stops.earliestReachableStopAfter(Time(0)), None)
     self.assertEqual(self.stops.earliestReachableStopAfter(Time(10)), None)
 
@@ -88,7 +90,7 @@ class TestStops(TestCase):
     self.assertEqual(self.stops.earliestReachableStopAfter(Time(10)), None)
     self.assertEqual(self.stops.earliestReachableStopAfter(Time(9)), (StopName("B"), Time(10)))
 
-  def testClean(self):
+  def testClean(self): # Only test if clean() method of MockStop was accessed (works as Stop)
     for stop in self.stops._stops.values():
       self.assertEqual(stop.cleaned, False)
     self.stops.clean()
