@@ -1,4 +1,6 @@
-from typing import Dict, List, Tuple
+from typing import Dict, List, Optional, Tuple
+
+from sqlalchemy.orm.session import Session
 
 from connectionSearch.datatypes.lineName import LineName
 from connectionSearch.datatypes.stopName import StopName
@@ -25,7 +27,7 @@ class LineInterface:
   def updateReachables(self, i: int, time: Time) -> None:
     pass
 
-  def updateCapacityAndGetPreviousStop(self, stop: StopName, time: Time) -> StopName:
+  def updateCapacityAndGetPreviousStop(self, stop: StopName, time: Time, session: Optional[Session] = None) -> StopName:
     pass
 
 class LineFactory:
@@ -51,6 +53,7 @@ class LineFactory:
       segment: LineSegmentInterface = line_segment_factory.create(TimeDiff(segmentDB.timeToNext), segmentDB.capacity,
                                                                   LineName(line.name), StopName(segmentDB.next), stops)
       segment.setPassengers(passengers)
+      segment.setDBObj(segmentDB)
       segments.append(segment)
 
     return Line(LineName(line.name), times, StopName(line.first_stop), segments)
@@ -100,10 +103,10 @@ class Line(LineInterface):
         break
       i += 1
 
-  def updateCapacityAndGetPreviousStop(self, stop: StopName, time: Time) -> StopName:
+  def updateCapacityAndGetPreviousStop(self, stop: StopName, time: Time, session: Optional[Session] = None) -> StopName:
     for i in range(len(self._lineSegments)):
       if self._lineSegments[i].nextStopOnly == stop:
-        self._lineSegments[i].incrementCapacity(time)
+        self._lineSegments[i].incrementCapacity(time, session)
         if i == 0: return self._firstStop
         return self._lineSegments[i-1].nextStopOnly
 

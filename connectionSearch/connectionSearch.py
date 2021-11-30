@@ -48,6 +48,7 @@ class ConnectionSearch:
       result.stops.append(currentStop)
 
     self._stops.clean()
+    self._lines.clean()
     result.stops.reverse()
     return result
 

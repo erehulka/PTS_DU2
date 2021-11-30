@@ -115,7 +115,6 @@ class StopsDB(Stops):
 
   def clean(self) -> None:
     self._stops = dict()
-    # TODO Persist changes to DB
 
   def getByName(self, name: StopName) -> StopInterface:
     if name not in self._stops:

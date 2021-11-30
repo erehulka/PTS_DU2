@@ -1,5 +1,7 @@
 from typing import Dict, List
 
+from sqlalchemy.orm.session import Session
+
 from connectionSearch.datatypes.lineName import LineName
 from connectionSearch.datatypes.stopName import StopName
 from connectionSearch.datatypes.time import Time
@@ -9,6 +11,7 @@ from connectionSearch.stops import StopsInterface
 
 from database.selects import select_line_by_name_dataset
 from database.setup import LineDB
+from database.sessions import create_session
 
 class LinesInterface:
 
@@ -51,11 +54,13 @@ class LinesDB(LinesInterface):
 
   _dataset: str
   _stops: StopsInterface
+  _session: Session
 
   def __init__(self, dataset: str, stops: StopsInterface) -> None:
     self._lines = dict()
     self._dataset = dataset
     self._stops = stops
+    self._session = create_session()
 
   def get_from_db(self, name: str) -> None:
     line: LineDB = select_line_by_name_dataset(name, self._dataset)
@@ -72,8 +77,8 @@ class LinesDB(LinesInterface):
     if line not in self._lines:
       self.get_from_db(line.name)
 
-    return self._lines[line].updateCapacityAndGetPreviousStop(stop, time)
+    return self._lines[line].updateCapacityAndGetPreviousStop(stop, time, self._session)
 
   def clean(self) -> None:
+    self._session.commit()
     self._lines = dict()
-    # TODO Persist changes in LineSegment
