@@ -6,7 +6,7 @@ from connectionSearch.datatypes.lineName import LineName
 
 from connectionSearch.stop import StopFactory, StopInterface
 
-from database.selects import select_line_by_name_dataset, select_stop_by_name_dataset
+from database.queries import select_stop_by_name_dataset
 from database.setup import StopDB
 
 class StopsInterface:

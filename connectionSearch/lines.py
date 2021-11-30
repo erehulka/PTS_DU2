@@ -9,7 +9,7 @@ from connectionSearch.datatypes.time import Time
 from connectionSearch.line import LineFactory, LineInterface
 from connectionSearch.stops import StopsInterface
 
-from database.selects import select_line_by_name_dataset
+from database.queries import select_line_by_name_dataset
 from database.setup import LineDB
 from database.sessions import create_session
 
