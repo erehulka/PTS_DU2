@@ -1,4 +1,5 @@
 from typing import List, Optional, Tuple
+import logging
 
 from connectionSearch.datatypes.connectionData import ConnectionData
 from connectionSearch.datatypes.lineName import LineName
@@ -24,7 +25,7 @@ class ConnectionSearch:
 
     reachableAfter: Optional[ Tuple[StopName, Time] ] = self._stops.earliestReachableStopAfter(time)
     if reachableAfter is None:
-      # TODO Logging
+      logging.getLogger(__name__).warning('No path found between %s and %s', fr, to)
       return None
     while reachableAfter is not None and reachableAfter[0] != to:
       newTime: Time = reachableAfter[1]
