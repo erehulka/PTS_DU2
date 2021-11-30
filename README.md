@@ -10,7 +10,7 @@ Then to setup database, run
 
 Now, your database is configured, and you can run all tests simply with `make`, which runs `make test`
 
-Info: To also run database tests, you have to uncomment the method in test/testDB.py. Then run followinf three commands:
+Info: To also run database tests, you have to uncomment the method in test/testDB.py. Then run following three commands:
 
     make recreate_whole_db
     make
