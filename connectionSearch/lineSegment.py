@@ -29,6 +29,9 @@ class LineSegmentInterface:
   def nextStopOnly(self) -> StopName:
     pass
 
+  def setPassengers(self, passengers: Dict[Time, int]) -> None:
+    pass
+
 class LineSegmentFactory:
 
   def create(self, timeToNext: TimeDiff, capacity: int, line: LineName, next: StopName, stops: StopsInterface) -> LineSegmentInterface:
@@ -68,3 +71,6 @@ class LineSegment(LineSegmentInterface):
   @property
   def nextStopOnly(self) -> StopName:
     return self._nextStop
+
+  def setPassengers(self, passengers: Dict[Time, int]) -> None:
+    self._numberOfPassengers = passengers

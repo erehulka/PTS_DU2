@@ -9,4 +9,7 @@ create_db_delete_old:
 	- rm database/data.db
 	python3 database/setup.py
 
+create_dataset_basic:
+	python3 -c 'from database.add_data import create_dataset_basic; create_dataset_basic() '
+
 FORCE: ;

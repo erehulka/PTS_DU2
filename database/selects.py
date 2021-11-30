@@ -3,8 +3,14 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database.setup import LineDB, Dataset, StopDB
 
+import configparser
+config = configparser.ConfigParser()
+config.read('config.ini')
+
 def select_line_by_name_dataset(name: str, dataset: str) -> LineDB:
   engine = create_engine('sqlite:///database/data.db', connect_args={"check_same_thread": False}, poolclass=StaticPool)
+  if config.get('APP', 'Debug') == 'True':
+    engine.echo = True
 
   Session = sessionmaker(bind=engine)
   session = Session()
@@ -18,6 +24,8 @@ def select_line_by_name_dataset(name: str, dataset: str) -> LineDB:
 
 def select_stop_by_name_dataset(name: str, dataset: str) -> StopDB:
   engine = create_engine('sqlite:///database/data.db', connect_args={"check_same_thread": False}, poolclass=StaticPool)
+  if config.get('APP', 'Debug') == 'True':
+    engine.echo = True
 
   Session = sessionmaker(bind=engine)
   session = Session()

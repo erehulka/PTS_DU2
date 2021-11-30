@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import Dict, List, Tuple
 
 from connectionSearch.datatypes.lineName import LineName
 from connectionSearch.datatypes.stopName import StopName
@@ -41,8 +41,17 @@ class LineFactory:
     segments: List[LineSegmentInterface] = list()
     line_segment_factory = LineSegmentFactory()
     for segmentDB in line.line_segments:
-      segments.append(line_segment_factory.create(segmentDB.timeToNext, segmentDB.capacity, 
-        line.name, StopName(line.next), stops))
+      passengers: Dict[Time, int] = {}
+      for p in segmentDB.passengers:
+        if Time(p.time) not in passengers:
+          passengers[Time(p.time)] = 0
+
+        passengers[Time(p.time)] += 1
+
+      segment: LineSegmentInterface = line_segment_factory.create(TimeDiff(segmentDB.timeToNext), segmentDB.capacity,
+                                                                  LineName(line.name), StopName(segmentDB.next), stops)
+      segment.setPassengers(passengers)
+      segments.append(segment)
 
     return Line(LineName(line.name), times, StopName(line.first_stop), segments)
 

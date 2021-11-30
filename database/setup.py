@@ -2,7 +2,13 @@ from sqlalchemy.pool import StaticPool
 from sqlalchemy.orm import declarative_base, relationship, DeclarativeMeta
 from sqlalchemy import Column, Integer, String, ForeignKey, create_engine, Table
 
+import configparser
+config = configparser.ConfigParser()
+config.read('config.ini')
+
 engine = create_engine('sqlite:///database/data.db', connect_args={"check_same_thread": False}, poolclass=StaticPool)
+if config.get('APP', 'Debug') == 'True':
+    engine.echo = True
 
 Base: DeclarativeMeta = declarative_base()
 
@@ -25,6 +31,7 @@ class LineDB(Base):
   id = Column(Integer, primary_key=True)
   name = Column(String)
   first_stop = Column(String)
+  stops = relationship("StopDB", secondary=association_table, lazy='subquery')
   dataset_id = Column(Integer, ForeignKey('datasets.id'))
 
   dataset = relationship('Dataset', back_populates='lines')
@@ -35,10 +42,10 @@ class StopDB(Base):
 
   id = Column(Integer, primary_key=True)
   name = Column(String)
-  lines = relationship("LineDB", secondary=association_table)
+  lines = relationship("LineDB", secondary=association_table, lazy='subquery', overlaps="stops")
   dataset_id = Column(Integer, ForeignKey('datasets.id'))
 
-  dataset = relationship('Dataset', back_populates='lines')
+  dataset = relationship('Dataset', back_populates='stops')
   
 class StartTimeDB(Base):
 
@@ -57,7 +64,6 @@ class LineSegmentDB(Base):
   id = Column(Integer, primary_key=True)
   timeToNext = Column(Integer)
   capacity = Column(Integer)
-  line = Column(String)
   next = Column(String)
   line_id = Column(Integer, ForeignKey("lines.id"))
 
@@ -76,10 +82,10 @@ class PassengerDB(Base):
   def __repr__(self):
     return "<Passenger(time='%s')>" % (self.time)
 
-LineSegmentDB.passengers = relationship('PassengerDB', order_by=PassengerDB.id, back_populates="line_segment")
-LineDB.line_segments = relationship('LineSegmentDB', order_by=LineSegmentDB.id, back_populates='line')
-LineDB.times = relationship('StartTimeDB', order_by=StartTimeDB.id, back_populates='line')
-Dataset.lines = relationship('LineDB', order_by=LineDB.id, back_populates='dataset')
-Dataset.stops = relationship('StopDB', order_by=StopDB.id, back_populates='dataset')
+LineSegmentDB.passengers = relationship('PassengerDB', order_by=PassengerDB.id, back_populates="line_segment", lazy='subquery')
+LineDB.line_segments = relationship('LineSegmentDB', order_by=LineSegmentDB.id, back_populates='line', lazy='subquery')
+LineDB.times = relationship('StartTimeDB', order_by=StartTimeDB.id, back_populates='line', lazy='subquery')
+Dataset.lines = relationship('LineDB', order_by=LineDB.id, back_populates='dataset', lazy='subquery')
+Dataset.stops = relationship('StopDB', order_by=StopDB.id, back_populates='dataset', lazy='subquery')
 
 Base.metadata.create_all(engine)

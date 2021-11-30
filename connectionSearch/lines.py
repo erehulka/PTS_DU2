@@ -20,6 +20,9 @@ class LinesInterface:
   def updateCapacityAndGetPreviousStop(self, line: LineName, stop: StopName, time: Time) -> StopName:
     pass
 
+  def clean(self) -> None:
+    pass
+
 class LinesFactory:
 
   def create(self, lines: Dict[LineName, LineInterface]) -> LinesInterface:
@@ -70,3 +73,7 @@ class LinesDB(LinesInterface):
       self.get_from_db(line.name)
 
     return self._lines[line].updateCapacityAndGetPreviousStop(stop, time)
+
+  def clean(self) -> None:
+    self._lines = dict()
+    # TODO Persist changes in LineSegment
