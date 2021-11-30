@@ -56,4 +56,4 @@ def create_dataset_basic():
 
     session.close()
   except:
-    print('Error: This dataset was already added')
+    print(f'Error: This dataset (Basic) was already added')
