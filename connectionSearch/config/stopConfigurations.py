@@ -1,4 +1,3 @@
-from typing import Dict, List
 from connectionSearch.connectionSearch import ConnectionSearch
 from connectionSearch.datatypes.lineName import LineName
 from connectionSearch.datatypes.stopName import StopName
@@ -10,8 +9,6 @@ from connectionSearch.stop import StopFactory
 from connectionSearch.stops import StopsFactory, StopsInterface
 
 def easyConfig() -> ConnectionSearch:
-  #stops: List[Stop] = [Stop(StopName("A"), [LineName("1")]), Stop(StopName("B"), [LineName(
-  #    "1")]), Stop(StopName("C"), [LineName("1")]), Stop(StopName("D"), [LineName("1")]), Stop(StopName("E"), [LineName("1")]), Stop(StopName("F"), [LineName("1")])]
   stopsFactory = StopsFactory()
   stopFactory = StopFactory()
   stops: StopsInterface = stopsFactory.create(
