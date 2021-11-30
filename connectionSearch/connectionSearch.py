@@ -9,7 +9,20 @@ from connectionSearch.datatypes.time import Time
 from connectionSearch.stops import StopsInterface
 from connectionSearch.lines import LinesInterface
 
-class ConnectionSearch:
+class ConnectionSearchInterface:
+
+  _stops: StopsInterface
+  _lines: LinesInterface
+
+  def search(self, fr: StopName, to: StopName, time: Time) -> Optional[ConnectionData]:
+    pass
+
+class ConnectionSearchFactory:
+
+  def create(self, stops: StopsInterface, lines: LinesInterface) -> ConnectionSearchInterface:
+    return ConnectionSearch(stops, lines)
+
+class ConnectionSearch(ConnectionSearchInterface):
 
   _stops: StopsInterface
   _lines: LinesInterface

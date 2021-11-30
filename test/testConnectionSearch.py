@@ -39,6 +39,7 @@ class TestConnectionSearcg(TestCase):
     # etc etc, same tests as in test_easy()
 
   def test_prague(self):
+    # Prague metro map: https://i.pinimg.com/originals/43/a8/03/43a8032132d72e0a1cd930044ae8154f.gif
     result: ConnectionData = self.searchPrague.search(StopName("Malostranska"), StopName("Namesti Republiky"), Time(10)) # One change at Mustek
     self.assertTrue(StopName("Mustek") in result.stops)
     # Unfortunately the lines go only one way...
