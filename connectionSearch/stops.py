@@ -95,7 +95,9 @@ class StopsDB(Stops):
     self._dataset = dataset
 
   def get_from_db(self, name: str) -> None:
-    stop: StopDB = select_stop_by_name_dataset(name, self._dataset)
+    stop: Optional[StopDB] = select_stop_by_name_dataset(name, self._dataset)
+    if stop is None:
+      raise ValueError(f"Stop {name} is not in database.")
     self._stops[StopName(name)] = StopFactory.createFromDB(stop)
 
   def getLines(self, stop: StopName) -> List[LineName]:

@@ -36,7 +36,8 @@ class LineFactory:
   def create(name: LineName, times: List[Time], firstStop: StopName, lineSegments: List[LineSegmentInterface]) -> LineInterface:
     return Line(name, times, firstStop, lineSegments)
 
-  def createFromDb(self, line: LineDB, stops: StopsInterface) -> LineInterface:
+  @staticmethod
+  def createFromDb(line: LineDB, stops: StopsInterface) -> LineInterface:
     times: List[Time] = list()
     for timeDB in line.times:
       times.append(Time(timeDB.time))

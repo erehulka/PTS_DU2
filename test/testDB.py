@@ -1,5 +1,5 @@
 from unittest import TestCase
-from connectionSearch.connectionSearch import ConnectionSearchFactory
+from connectionSearch.connection import ConnectionSearchFactory
 from connectionSearch.datatypes.stopName import StopName
 from connectionSearch.datatypes.time import Time
 from connectionSearch.stops import StopsFactory

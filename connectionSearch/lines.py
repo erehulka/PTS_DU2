@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from sqlalchemy.orm.session import Session
 
@@ -66,7 +66,9 @@ class LinesDB(LinesInterface):
     self._session = create_session()
 
   def get_from_db(self, name: str) -> None:
-    line: LineDB = select_line_by_name_dataset(name, self._dataset)
+    line: Optional[LineDB] = select_line_by_name_dataset(name, self._dataset)
+    if line is None:
+      raise ValueError(f"Line {name} is not in dabatase")
     self._lines[LineName(name)] = LineFactory.createFromDb(line, self._stops)
 
   def updateReachable(self, lines: List[LineName], stop: StopName, time: Time) -> None:
