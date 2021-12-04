@@ -32,7 +32,8 @@ class LineInterface:
 
 class LineFactory:
 
-  def create(self, name: LineName, times: List[Time], firstStop: StopName, lineSegments: List[LineSegmentInterface]) -> LineInterface:
+  @staticmethod
+  def create(name: LineName, times: List[Time], firstStop: StopName, lineSegments: List[LineSegmentInterface]) -> LineInterface:
     return Line(name, times, firstStop, lineSegments)
 
   def createFromDb(self, line: LineDB, stops: StopsInterface) -> LineInterface:
@@ -41,7 +42,6 @@ class LineFactory:
       times.append(Time(timeDB.time))
 
     segments: List[LineSegmentInterface] = list()
-    line_segment_factory = LineSegmentFactory()
     for segmentDB in line.line_segments:
       passengers: Dict[Time, int] = {}
       for p in segmentDB.passengers:
@@ -50,7 +50,7 @@ class LineFactory:
 
         passengers[Time(p.time)] += 1
 
-      segment: LineSegmentInterface = line_segment_factory.create(TimeDiff(segmentDB.timeToNext), segmentDB.capacity,
+      segment: LineSegmentInterface = LineSegmentFactory.create(TimeDiff(segmentDB.timeToNext), segmentDB.capacity,
                                                                   LineName(line.name), StopName(segmentDB.next), stops)
       segment.setPassengers(passengers)
       segment.setDBObj(segmentDB)
@@ -85,7 +85,7 @@ class Line(LineInterface):
     self.updateReachables(stopIndex, currentTime)
 
     startingTimesIndex: int = len(self._startingTimes) - 1
-    while(self.tryEarlier(time, currentTime - startingTime, startingTimesIndex)):
+    while self.tryEarlier(time, currentTime - startingTime, startingTimesIndex):
       self.updateReachables(stopIndex, self._startingTimes[startingTimesIndex - 1] + currentTime - startingTime)
       startingTimesIndex -= 1
 

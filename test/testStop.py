@@ -8,8 +8,7 @@ from connectionSearch.datatypes.time import Time
 class TestStop(TestCase):
 
   def setUp(self):
-    factory = StopFactory()
-    self.stop = factory.create(StopName("Test stop"), [LineName("1"), LineName("2")])
+    self.stop = StopFactory.create(StopName("Test stop"), [LineName("1"), LineName("2")])
 
   def test_reachable(self):
     self.assertEqual(self.stop.reachableAt, (None, None))

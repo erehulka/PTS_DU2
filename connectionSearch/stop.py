@@ -33,13 +33,13 @@ class StopInterface:
 
 class StopFactory:
 
-  def create(self, name: StopName, lines: List[LineName]) -> StopInterface:
+  @staticmethod
+  def create(name: StopName, lines: List[LineName]) -> StopInterface:
     return Stop(name, lines)
 
-  def createFromDB(self, stop: StopDB) -> StopInterface:
-    lines: List[LineName] = list()
-    for line in stop.lines:
-      lines.append(LineName(line.name))
+  @staticmethod
+  def createFromDB(stop: StopDB) -> StopInterface:
+    lines: List[LineName] = [LineName(line.name) for line in stop.lines]
     return Stop(StopName(stop.name), lines)
 
 class Stop(StopInterface):

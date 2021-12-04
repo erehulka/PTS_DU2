@@ -42,17 +42,18 @@ class LineSegmentInterface:
 
 class LineSegmentFactory:
 
-  def create(self, timeToNext: TimeDiff, capacity: int, line: LineName, next: StopName, stops: StopsInterface) -> LineSegmentInterface:
-    return LineSegment(timeToNext, capacity, line, next, stops)
+  @staticmethod
+  def create(timeToNext: TimeDiff, capacity: int, line: LineName, nextStop: StopName, stops: StopsInterface) -> LineSegmentInterface:
+    return LineSegment(timeToNext, capacity, line, nextStop, stops)
 
 class LineSegment(LineSegmentInterface):
 
-  def __init__(self, timeToNext: TimeDiff, capacity: int, line: LineName, next: StopName, stops: StopsInterface) -> None:
+  def __init__(self, timeToNext: TimeDiff, capacity: int, line: LineName, nextStop: StopName, stops: StopsInterface) -> None:
     self._timeToNextStop = timeToNext
     self._numberOfPassengers = {}
     self._capacity = capacity
     self._lineName = line
-    self._nextStop = next
+    self._nextStop = nextStop
     self._stops = stops
     self._dbObj = None
 

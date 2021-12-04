@@ -19,7 +19,8 @@ class ConnectionSearchInterface:
 
 class ConnectionSearchFactory:
 
-  def create(self, stops: StopsInterface, lines: LinesInterface) -> ConnectionSearchInterface:
+  @staticmethod
+  def create(stops: StopsInterface, lines: LinesInterface) -> ConnectionSearchInterface:
     return ConnectionSearch(stops, lines)
 
 class ConnectionSearch(ConnectionSearchInterface):
@@ -46,10 +47,9 @@ class ConnectionSearch(ConnectionSearchInterface):
       self._lines.updateReachable(linesFrom, reachableAfter[0], newTime)
       reachableAfter = self._stops.earliestReachableStopAfter(newTime)
     
-    if reachableAfter is not None:
-      result: ConnectionData = ConnectionData(fr, to, time, reachableAfter[1], list())
-    else: 
+    if reachableAfter is None:
       return None
+    result: ConnectionData = ConnectionData(fr, to, time, reachableAfter[1], list())
 
     currentStop: StopName = to
     currentTime: Optional[Time]

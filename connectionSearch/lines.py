@@ -28,10 +28,12 @@ class LinesInterface:
 
 class LinesFactory:
 
-  def create(self, lines: Dict[LineName, LineInterface]) -> LinesInterface:
+  @staticmethod
+  def create(lines: Dict[LineName, LineInterface]) -> LinesInterface:
     return Lines(lines)
 
-  def createDB(self, dataset: str, stops: StopsInterface) -> LinesInterface:
+  @staticmethod
+  def createDB(dataset: str, stops: StopsInterface) -> LinesInterface:
     return LinesDB(dataset, stops)
 
 class Lines(LinesInterface):
@@ -41,7 +43,8 @@ class Lines(LinesInterface):
 
   def updateReachable(self, lines: List[LineName], stop: StopName, time: Time) -> None:
     for line in lines:
-      if line not in self._lines: continue
+      if line not in self._lines:
+        raise Exception("Line " + line.name + " passed as an argument was not found.")
       self._lines[line].updateReachable(time, stop)
 
   def updateCapacityAndGetPreviousStop(self, line: LineName, stop: StopName, time: Time) -> StopName:
@@ -64,8 +67,7 @@ class LinesDB(LinesInterface):
 
   def get_from_db(self, name: str) -> None:
     line: LineDB = select_line_by_name_dataset(name, self._dataset)
-    lineFactory = LineFactory()
-    self._lines[LineName(name)] = lineFactory.createFromDb(line, self._stops)
+    self._lines[LineName(name)] = LineFactory.createFromDb(line, self._stops)
 
   def updateReachable(self, lines: List[LineName], stop: StopName, time: Time) -> None:
     for line in lines:

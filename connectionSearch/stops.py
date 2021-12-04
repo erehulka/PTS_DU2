@@ -33,10 +33,12 @@ class StopsInterface:
 
 class StopsFactory:
 
-  def create(self, stops: Dict[StopName, StopInterface]) -> StopsInterface:
+  @staticmethod
+  def create(stops: Dict[StopName, StopInterface]) -> StopsInterface:
     return Stops(stops)
 
-  def createDB(self, dataset: str) -> StopsInterface:
+  @staticmethod
+  def createDB(dataset: str) -> StopsInterface:
     return StopsDB(dataset)
 
 class Stops(StopsInterface):
@@ -89,13 +91,12 @@ class StopsDB(Stops):
   _dataset: str
 
   def __init__(self, dataset: str) -> None:
-    self._stops = dict()
+    super().__init__(dict())
     self._dataset = dataset
 
   def get_from_db(self, name: str) -> None:
     stop: StopDB = select_stop_by_name_dataset(name, self._dataset)
-    stopFactory = StopFactory()
-    self._stops[StopName(name)] = stopFactory.createFromDB(stop)
+    self._stops[StopName(name)] = StopFactory.createFromDB(stop)
 
   def getLines(self, stop: StopName) -> List[LineName]:
     if stop not in self._stops:

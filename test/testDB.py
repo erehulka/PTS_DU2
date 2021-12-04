@@ -9,8 +9,8 @@ class TestDB(TestCase): # test if database is working correctly
 
   def setUp(self) -> None:
     dataset = 'Basic'
-    stops = StopsFactory().createDB(dataset)
-    self.search = ConnectionSearchFactory().create(stops, LinesFactory().createDB(dataset, stops))
+    stops = StopsFactory.createDB(dataset)
+    self.search = ConnectionSearchFactory.create(stops, LinesFactory.createDB(dataset, stops))
 
   """ 
   # WARNING - uncomment only after running 'make recreate_whole_db' and after testing run again
@@ -31,8 +31,8 @@ class TestDB(TestCase): # test if database is working correctly
 
     # And now recreate search instance, to see that we will still have changes from db
     dataset = 'Basic'
-    stops = StopsFactory().createDB(dataset)
-    self.search = ConnectionSearchFactory().create(stops, LinesFactory().createDB(dataset, stops))
+    stops = StopsFactory.createDB(dataset)
+    self.search = ConnectionSearchFactory.create(stops, LinesFactory.createDB(dataset, stops))
 
     result = self.search.search(StopName("A"), StopName("C"), Time(10))
     self.assertEqual(result.arrivalTime, Time(25)) # Still second option
@@ -46,8 +46,8 @@ class TestDB(TestCase): # test if database is working correctly
 
     # Try again
     dataset = 'Basic'
-    stops = StopsFactory().createDB(dataset)
-    self.search = ConnectionSearchFactory().create(stops, LinesFactory().createDB(dataset, stops))
+    stops = StopsFactory.createDB(dataset)
+    self.search = ConnectionSearchFactory.create(stops, LinesFactory.createDB(dataset, stops))
 
     result = self.search.search(StopName("A"), StopName("C"), Time(10))
     self.assertEqual(result, None)

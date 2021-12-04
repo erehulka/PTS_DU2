@@ -12,8 +12,7 @@ class FakeStops:
   _stop: StopInterface
 
   def __init__(self):
-    factory = StopFactory()
-    self._stop = factory.create(StopName("Fake Stop"), [LineName("Fake Line")])
+    self._stop = StopFactory.create(StopName("Fake Stop"), [LineName("Fake Line")])
 
   def getByName(self, name: StopName) -> StopInterface:
     return self._stop
@@ -22,8 +21,7 @@ class FakeStops:
 class TestLineSegment(TestCase):
 
   def setUp(self):
-    lineSegmentFactory = LineSegmentFactory()
-    self.segment = lineSegmentFactory.create(
+    self.segment = LineSegmentFactory.create(
       TimeDiff(10),
       2,
       LineName("Test Line"),

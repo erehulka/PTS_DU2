@@ -20,31 +20,28 @@ class TestLines(TestCase):
 
 
   def setUp(self):
-    stopsFactory = StopsFactory()
-    stopFactory = StopFactory()
-    stops: StopsInterface = stopsFactory.create(
+    stops: StopsInterface = StopsFactory.create(
         {
-            StopName("A"): stopFactory.create(StopName("A"), [LineName("1")]),
-            StopName("B"): stopFactory.create(StopName("B"), [LineName(
+            StopName("A"): StopFactory.create(StopName("A"), [LineName("1")]),
+            StopName("B"): StopFactory.create(StopName("B"), [LineName(
                 "1"), LineName("1")]),
-            StopName("C"): stopFactory.create(StopName("C"), [LineName("1")]),
-            StopName("D"): stopFactory.create(StopName("D"), [LineName("1")]),
-            StopName("E"): stopFactory.create(StopName("E"), [LineName("1")]),
-            StopName("F"): stopFactory.create(StopName("F"), [LineName("1")]),
+            StopName("C"): StopFactory.create(StopName("C"), [LineName("1")]),
+            StopName("D"): StopFactory.create(StopName("D"), [LineName("1")]),
+            StopName("E"): StopFactory.create(StopName("E"), [LineName("1")]),
+            StopName("F"): StopFactory.create(StopName("F"), [LineName("1")]),
         }
     )
-    lineFactory = LineFactory()
-    lineSegmentFactory = LineSegmentFactory()
-    self.line = lineFactory.create(
+    
+    self.line = LineFactory.create(
         LineName("1"),
         [Time(10), Time(20), Time(30), Time(40)],
         StopName("A"),
         [
-            lineSegmentFactory.create(TimeDiff(2), 10, LineName("1"), StopName("B"), stops),
-            lineSegmentFactory.create(TimeDiff(3), 10, LineName("1"), StopName("C"), stops),
-            lineSegmentFactory.create(TimeDiff(4), 10, LineName("1"), StopName("D"), stops),
-            lineSegmentFactory.create(TimeDiff(5), 10, LineName("1"), StopName("E"), stops),
-            lineSegmentFactory.create(TimeDiff(6), 10, LineName("1"), StopName("F"), stops),
+            LineSegmentFactory.create(TimeDiff(2), 10, LineName("1"), StopName("B"), stops),
+            LineSegmentFactory.create(TimeDiff(3), 10, LineName("1"), StopName("C"), stops),
+            LineSegmentFactory.create(TimeDiff(4), 10, LineName("1"), StopName("D"), stops),
+            LineSegmentFactory.create(TimeDiff(5), 10, LineName("1"), StopName("E"), stops),
+            LineSegmentFactory.create(TimeDiff(6), 10, LineName("1"), StopName("F"), stops),
         ]
     )
 

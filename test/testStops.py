@@ -52,8 +52,7 @@ class TestStops(TestCase):
     self.assertEqual(True, False)
 
   def setUp(self):
-    factory = StopsFactory()
-    self.stops = factory.create(
+    self.stops = StopsFactory.create(
       {
         StopName("A"): MockStop(StopName("A")),
         StopName("B"): MockStop(StopName("B")),

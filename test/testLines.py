@@ -33,8 +33,7 @@ class TestLines(TestCase):
     self.assertEqual(True, False)
 
   def setUp(self):
-    factory = LinesFactory()
-    self.lines = factory.create({
+    self.lines = LinesFactory.create({
         LineName("Line A"): FakeLine(LineName("Line A"), StopName("First A")),
         LineName("Line B"): FakeLine(LineName("Line B"), StopName("First B")),
     })
