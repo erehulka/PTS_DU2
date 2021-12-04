@@ -14,21 +14,21 @@ from database.setup import LineDB
 class LineInterface:
 
   _name: LineName
-  _startingTimes: List[Time] # sorted
+  _startingTimes: List[Time] # ordered
   _firstStop: StopName
   _lineSegments: List[LineSegmentInterface]  # ordered
 
   def updateReachable(self, time: Time, stop: StopName) -> None:
-    pass
+    raise NotImplementedError
 
   def tryEarlier(self, time: Time, duration: TimeDiff, currentTimeI: int) -> bool:
-    pass
+    raise NotImplementedError
 
   def updateReachables(self, i: int, time: Time) -> None:
-    pass
+    raise NotImplementedError
 
   def updateCapacityAndGetPreviousStop(self, stop: StopName, time: Time, session: Optional[Session] = None) -> StopName:
-    pass
+    raise NotImplementedError
 
 class LineFactory:
 
@@ -52,9 +52,9 @@ class LineFactory:
         passengers[Time(p.time)] += 1
 
       segment: LineSegmentInterface = LineSegmentFactory.create(TimeDiff(segmentDB.timeToNext), segmentDB.capacity,
-                                                                  LineName(line.name), StopName(segmentDB.next), stops)
+                                                                  LineName(line.name), StopName(segmentDB.next), stops, 
+                                                                  segmentDB)
       segment.setPassengers(passengers)
-      segment.setDBObj(segmentDB)
       segments.append(segment)
 
     return Line(LineName(line.name), times, StopName(line.first_stop), segments)

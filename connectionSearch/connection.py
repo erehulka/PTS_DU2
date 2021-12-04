@@ -15,7 +15,7 @@ class ConnectionSearchInterface:
   _lines: LinesInterface
 
   def search(self, fr: StopName, to: StopName, time: Time) -> Optional[ConnectionData]:
-    pass
+    raise NotImplementedError
 
 class ConnectionSearchFactory:
 

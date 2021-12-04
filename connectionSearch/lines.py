@@ -18,13 +18,13 @@ class LinesInterface:
   _lines: Dict[LineName, LineInterface]
 
   def updateReachable(self, lines: List[LineName], stop: StopName, time: Time) -> None:
-    pass
+    raise NotImplementedError
 
   def updateCapacityAndGetPreviousStop(self, line: LineName, stop: StopName, time: Time) -> StopName:
-    pass
+    raise NotImplementedError
 
   def clean(self) -> None:
-    pass
+    raise NotImplementedError
 
 class LinesFactory:
 
@@ -53,6 +53,9 @@ class Lines(LinesInterface):
 
     return self._lines[line].updateCapacityAndGetPreviousStop(stop, time)
 
+  def clean(self) -> None:
+    pass
+
 class LinesDB(LinesInterface):
 
   _dataset: str
@@ -79,7 +82,7 @@ class LinesDB(LinesInterface):
 
   def updateCapacityAndGetPreviousStop(self, line: LineName, stop: StopName, time: Time) -> StopName:
     if line not in self._lines:
-      self.get_from_db(line.name)
+      raise Exception("Line " + line.name + " passed as an argument was not found.")
 
     return self._lines[line].updateCapacityAndGetPreviousStop(stop, time, self._session)
 

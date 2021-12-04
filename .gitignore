@@ -1,4 +1,4 @@
 *__pycache__*
 database/data.db
 *.pyc
-log/
+log/*

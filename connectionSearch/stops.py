@@ -14,22 +14,22 @@ class StopsInterface:
   _stops: Dict[StopName, StopInterface]
 
   def earliestReachableStopAfter(self, time: Time) -> Optional[ Tuple[StopName, Time] ]:
-    pass
+    raise NotImplementedError
 
   def getLines(self, stop: StopName) -> List[LineName]:
-    pass
+    raise NotImplementedError
 
   def getReachableAt(self, stop: StopName) -> Tuple[Optional[Time], Optional[LineName]]:
-    pass
+    raise NotImplementedError
 
   def setStartingStop(self, stop: StopName, time: Time) -> bool:
-    pass
+    raise NotImplementedError
 
   def clean(self) -> None:
-    pass
+    raise NotImplementedError
 
   def getByName(self, name: StopName) -> StopInterface:
-    pass
+    raise NotImplementedError
 
 class StopsFactory:
 

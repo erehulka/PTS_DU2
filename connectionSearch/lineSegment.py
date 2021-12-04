@@ -22,33 +22,32 @@ class LineSegmentInterface:
   _dbObj: Optional[LineSegmentDB]
 
   def nextStop(self, startTime: Time) -> Tuple[Time, StopName]:
-    pass
+    raise NotImplementedError
 
   def nextStopAndUpdateReachable(self, startTime: Time) -> Tuple[Time, StopName, bool]:
-    pass
+    raise NotImplementedError
 
   def incrementCapacity(self, time: Time, session: Optional[Session] = None) -> None:
-    pass
+    raise NotImplementedError
 
   @property
   def nextStopOnly(self) -> StopName:
-    pass
+    raise NotImplementedError
 
   def setPassengers(self, passengers: Dict[Time, int]) -> None:
-    pass
-
-  def setDBObj(self, dbObj: LineSegmentDB) -> None:
-    pass
+    raise NotImplementedError
 
 class LineSegmentFactory:
 
   @staticmethod
-  def create(timeToNext: TimeDiff, capacity: int, line: LineName, nextStop: StopName, stops: StopsInterface) -> LineSegmentInterface:
-    return LineSegment(timeToNext, capacity, line, nextStop, stops)
+  def create(timeToNext: TimeDiff, capacity: int, line: LineName, nextStop: StopName, stops: StopsInterface, dbObj: Optional[LineSegmentDB] = None) -> LineSegmentInterface:
+    #pylint: disable=too-many-arguments
+    return LineSegment(timeToNext, capacity, line, nextStop, stops, dbObj)
 
 class LineSegment(LineSegmentInterface):
 
-  def __init__(self, timeToNext: TimeDiff, capacity: int, line: LineName, nextStop: StopName, stops: StopsInterface) -> None:
+  def __init__(self, timeToNext: TimeDiff, capacity: int, line: LineName, 
+    nextStop: StopName, stops: StopsInterface, dbObj: Optional[LineSegmentDB] = None) -> None:
     #pylint: disable=too-many-arguments
     self._timeToNextStop = timeToNext
     self._numberOfPassengers = {}
@@ -56,7 +55,7 @@ class LineSegment(LineSegmentInterface):
     self._lineName = line
     self._nextStop = nextStop
     self._stops = stops
-    self._dbObj = None
+    self._dbObj = dbObj
 
   def nextStop(self, startTime: Time) -> Tuple[Time, StopName]:
     return (startTime + self._timeToNextStop, self._nextStop)
@@ -91,6 +90,3 @@ class LineSegment(LineSegmentInterface):
 
   def setPassengers(self, passengers: Dict[Time, int]) -> None:
     self._numberOfPassengers = passengers
-
-  def setDBObj(self, dbObj: LineSegmentDB) -> None:
-    self._dbObj = dbObj

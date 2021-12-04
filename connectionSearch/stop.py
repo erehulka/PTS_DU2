@@ -14,22 +14,22 @@ class StopInterface:
   _lines: List[LineName]
 
   def updateReachableAt(self, time: Time, line: Optional[LineName]) -> None:
-    pass
+    raise NotImplementedError
 
   def clean(self) -> None:
-    pass
+    raise NotImplementedError
 
   @property
   def reachableAt(self) -> Tuple[Optional[Time], Optional[LineName]]:
-    pass
+    raise NotImplementedError
 
   @property
   def lines(self) -> List[LineName]:
-    pass
+    raise NotImplementedError
 
   @property
   def name(self) -> StopName:
-    pass
+    raise NotImplementedError
 
 class StopFactory:
 
