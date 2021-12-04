@@ -3,6 +3,7 @@
 To install requirements, run
 
     pip3 install -r requirements.txt
+    mkdir log
 
 Then to setup database, run
 
