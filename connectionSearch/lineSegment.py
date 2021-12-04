@@ -49,6 +49,7 @@ class LineSegmentFactory:
 class LineSegment(LineSegmentInterface):
 
   def __init__(self, timeToNext: TimeDiff, capacity: int, line: LineName, nextStop: StopName, stops: StopsInterface) -> None:
+    #pylint: disable=too-many-arguments
     self._timeToNextStop = timeToNext
     self._numberOfPassengers = {}
     self._capacity = capacity

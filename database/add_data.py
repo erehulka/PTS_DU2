@@ -57,3 +57,5 @@ def create_dataset_basic():
     session.close()
   except:
     print(f'Error: This dataset (Basic) was already added')
+  finally:
+    session.rollback()

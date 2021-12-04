@@ -1,7 +1,7 @@
 from unittest import TestCase
 from connectionSearch.connection import ConnectionSearchFactory
-from connectionSearch.datatypes.stopName import StopName
-from connectionSearch.datatypes.time import Time
+from connectionSearch.datatypes.stopName import StopName #pylint: disable=unused-import
+from connectionSearch.datatypes.time import Time #pylint: disable=unused-import
 from connectionSearch.stops import StopsFactory
 from connectionSearch.lines import LinesFactory
 
@@ -54,6 +54,4 @@ class TestDB(TestCase): # test if database is working correctly
     # So sad
 
     # Congrats! Now the db is totally ruined. To fix it, simply reset data with 'make recreate_whole_db'
-  """
-
-
+  """ #pylint: disable=pointless-string-statement

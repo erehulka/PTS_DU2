@@ -14,7 +14,7 @@ class FakeStops:
   def __init__(self):
     self._stop = StopFactory.create(StopName("Fake Stop"), [LineName("Fake Line")])
 
-  def getByName(self, name: StopName) -> StopInterface:
+  def getByName(self, name: StopName) -> StopInterface: #pylint: disable=unused-variable, unused-argument
     return self._stop
 
 

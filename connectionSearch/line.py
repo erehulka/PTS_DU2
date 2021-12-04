@@ -38,11 +38,11 @@ class LineFactory:
 
   @staticmethod
   def createFromDb(line: LineDB, stops: StopsInterface) -> LineInterface:
-    times: List[Time] = list()
+    times: List[Time] = []
     for timeDB in line.times:
       times.append(Time(timeDB.time))
 
-    segments: List[LineSegmentInterface] = list()
+    segments: List[LineSegmentInterface] = []
     for segmentDB in line.line_segments:
       passengers: Dict[Time, int] = {}
       for p in segmentDB.passengers:
@@ -92,7 +92,8 @@ class Line(LineInterface):
 
 
   def tryEarlier(self, time: Time, duration: TimeDiff, currentTimeI: int) -> bool:
-    if currentTimeI == 0: return False
+    if currentTimeI == 0: 
+      return False
 
     return (self._startingTimes[currentTimeI - 1] + duration) >= time
 
@@ -105,10 +106,11 @@ class Line(LineInterface):
       i += 1
 
   def updateCapacityAndGetPreviousStop(self, stop: StopName, time: Time, session: Optional[Session] = None) -> StopName:
-    for i in range(len(self._lineSegments)):
-      if self._lineSegments[i].nextStopOnly == stop:
-        self._lineSegments[i].incrementCapacity(time, session)
-        if i == 0: return self._firstStop
+    for i, segment in enumerate(self._lineSegments):
+      if segment.nextStopOnly == stop:
+        segment.incrementCapacity(time, session)
+        if i == 0: 
+          return self._firstStop
         return self._lineSegments[i-1].nextStopOnly
 
     raise Exception("No such stop found")

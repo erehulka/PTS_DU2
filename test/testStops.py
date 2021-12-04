@@ -43,14 +43,6 @@ class MockStop: # Mock of stop class, so we know if it is cleaned by clean()
 
 class TestStops(TestCase):
 
-  def assert_exception(self, callable, *args, **kwargs): # Method to assert there will be exception
-    try:
-      callable(*args, **kwargs)
-    except:
-      self.assertEqual(True, True)
-      return
-    self.assertEqual(True, False)
-
   def setUp(self):
     self.stops = StopsFactory.create(
       {
@@ -66,11 +58,13 @@ class TestStops(TestCase):
 
   def test_get_reachable_at(self):
     self.assertEqual(self.stops.getReachableAt(StopName("A")), (None, None))
-    self.assert_exception(self.stops.getReachableAt, StopName("X"))
+    with self.assertRaises(Exception):
+      self.assertRaises(Exception, self.stops.getReachableAt(StopName("X")))
 
   def test_get_lines(self):
     self.assertEqual(self.stops.getLines(StopName("A")), [LineName("Test A")])
-    self.assert_exception(self.stops.getLines, StopName("X"))
+    with self.assertRaises(Exception):
+      self.stops.getLines(StopName("X"))
 
   # until now straightforward testing
 

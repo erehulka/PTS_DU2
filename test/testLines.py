@@ -1,8 +1,11 @@
+from typing import Optional
 from unittest import TestCase
+
+from sqlalchemy.orm.session import Session
 from connectionSearch.datatypes.lineName import LineName
 from connectionSearch.datatypes.stopName import StopName
 from connectionSearch.lines import LinesFactory
-from connectionSearch.datatypes.time import Time, TimeDiff
+from connectionSearch.datatypes.time import Time
 
 class FakeLine:
 
@@ -16,21 +19,17 @@ class FakeLine:
   def updateReachable(self, time: Time, stop: StopName) -> None:
     pass
 
-  def tryEarlier(self, time: Time, duration: TimeDiff, currentTimeI: int) -> bool:
+  @staticmethod
+  def tryEarlier() -> bool:
     return False
 
   def updateReachables(self, i: int, time: Time) -> None:
     pass
 
-class TestLines(TestCase):
+  def updateCapacityAndGetPreviousStop(self, stop: StopName, time: Time, session: Optional[Session] = None) -> StopName:
+    pass
 
-  def assert_exception(self, callable, *args, **kwargs): # Assert there will be exception
-    try:
-      callable(*args, **kwargs)
-    except:
-      self.assertEqual(True, True)
-      return
-    self.assertEqual(True, False)
+class TestLines(TestCase):
 
   def setUp(self):
     self.lines = LinesFactory.create({
@@ -40,11 +39,13 @@ class TestLines(TestCase):
 
   def test_update_reachable(self):
     # Test if there is no exception
-    self.lines.updateReachable([LineName("Line A"), LineName("Fake Line")], StopName("First A"), Time(10))
-    self.lines.updateReachable([LineName("Line A"), LineName("Fake Line")], StopName("First Fake"), Time(10))
+    self.lines.updateReachable([LineName("Line A"), LineName("Line A")], StopName("First A"), Time(10))
+    with self.assertRaises(Exception):
+      self.lines.updateReachable([LineName("Line A"), LineName("Line X Fake")], StopName("First Fake"), Time(10))
 
   def test_update_capacity_and_get_previous_stop(self):
     # We are testing update capacity in testLine.py, so only checking exceptions
-    self.assert_exception(self.lines.updateCapacityAndGetPreviousStop, LineName("Fake Line"), StopName("First A"), Time(10))
+    with self.assertRaises(Exception):
+      self.lines.updateCapacityAndGetPreviousStop(LineName("Line C"), StopName("First X"), Time(10))
 
   # MOST of Lines class works with Line class, which we tested in testLine.py

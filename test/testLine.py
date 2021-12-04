@@ -10,15 +10,6 @@ from connectionSearch.lineSegment import LineSegmentFactory
 
 class TestLines(TestCase):
 
-  def assert_exception(self, callable, *args, **kwargs):
-    try:
-      callable(*args, **kwargs)
-    except:
-      self.assertEqual(True, True)
-      return
-    self.assertEqual(True, False)
-
-
   def setUp(self):
     stops: StopsInterface = StopsFactory.create(
         {
@@ -46,7 +37,8 @@ class TestLines(TestCase):
     )
 
   def test_update_reachable(self):
-    self.assert_exception(self.line.updateReachable, Time(1000), StopName("A")) # No such time
+    with self.assertRaises(Exception):
+      self.line.updateReachable(Time(1000), StopName("A")) # No such time
     self.line.updateReachable(Time(15), StopName("A")) # Should take time 20
     self.assertTupleEqual(
       self.line._lineSegments[2]._stops.getByName(self.line._lineSegments[2]._nextStop).reachableAt,

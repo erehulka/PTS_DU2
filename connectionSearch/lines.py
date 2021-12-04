@@ -60,7 +60,7 @@ class LinesDB(LinesInterface):
   _session: Session
 
   def __init__(self, dataset: str, stops: StopsInterface) -> None:
-    self._lines = dict()
+    self._lines = {}
     self._dataset = dataset
     self._stops = stops
     self._session = create_session()
@@ -85,4 +85,4 @@ class LinesDB(LinesInterface):
 
   def clean(self) -> None:
     self._session.commit()
-    self._lines = dict()
+    self._lines = {}

@@ -58,7 +58,8 @@ class Stops(StopsInterface):
           earliest = reachableAt[0]
           earliestStop = stop.name
 
-    if earliest is None or earliestStop is None: return None
+    if earliest is None or earliestStop is None: 
+      return None
     
     return (earliestStop, earliest)
 
@@ -73,7 +74,8 @@ class Stops(StopsInterface):
     return self._stops[stop].reachableAt
 
   def setStartingStop(self, stop: StopName, time: Time) -> bool:
-    if stop not in self._stops: return False
+    if stop not in self._stops: 
+      return False
     self._stops[stop].updateReachableAt(time, None)
     return True
 
@@ -91,7 +93,7 @@ class StopsDB(Stops):
   _dataset: str
 
   def __init__(self, dataset: str) -> None:
-    super().__init__(dict())
+    super().__init__({})
     self._dataset = dataset
 
   def get_from_db(self, name: str) -> None:
@@ -117,7 +119,7 @@ class StopsDB(Stops):
     return True
 
   def clean(self) -> None:
-    self._stops = dict()
+    self._stops = {}
 
   def getByName(self, name: StopName) -> StopInterface:
     if name not in self._stops:

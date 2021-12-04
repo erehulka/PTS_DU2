@@ -26,7 +26,7 @@ class TestConnectionSearcg(TestCase):
     self.assertEqual(self.searchEasy._stops._stops[StopName("B")]._reachableAt, None) # B should be None, because of clean
 
     # So we have checked basically everything. Now if it takes capacity into account
-    for i in range(10):
+    for i in range(10): #pylint: disable=unused-variable
       result: ConnectionData = self.searchEasy.search(StopName("A"), StopName("C"), Time(10))
       # First possible should be fully booked
     self.assertEqual(result.arrivalTime, Time(25)) # So we will get second options

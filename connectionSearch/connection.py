@@ -49,7 +49,7 @@ class ConnectionSearch(ConnectionSearchInterface):
     
     if reachableAfter is None:
       return None
-    result: ConnectionData = ConnectionData(fr, to, time, reachableAfter[1], list())
+    result: ConnectionData = ConnectionData(fr, to, time, reachableAfter[1], [])
 
     currentStop: StopName = to
     currentTime: Optional[Time]
@@ -57,7 +57,8 @@ class ConnectionSearch(ConnectionSearchInterface):
     result.stops.append(currentStop)
     while currentStop != fr:
       currentTime, line = self._stops.getReachableAt(currentStop)
-      if currentTime is None or line is None: break
+      if currentTime is None or line is None: 
+        break
       currentStop = self._lines.updateCapacityAndGetPreviousStop(line, currentStop, currentTime)
       result.stops.append(currentStop)
 
