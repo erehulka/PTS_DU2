@@ -1,8 +1,8 @@
 test: FORCE
 	mypy connectionSearch
 	python3 -m unittest
-	find ./connectionSearch -iname "*.py" -print -exec pylint --disable=invalid-name --disable=missing-docstring --disable=bad-indentation --disable=wrong-import-order --disable=line-too-long --disable=too-few-public-methods --disable=trailing-whitespace {} \;
-	find ./test -iname "*.py" -print -exec pylint --disable=invalid-name --disable=missing-docstring --disable=bad-indentation --disable=wrong-import-order --disable=line-too-long --disable=too-few-public-methods --disable=protected-access --disable=trailing-whitespace {} \;
+	find ./connectionSearch -iname "*.py" -print -exec pylint --disable=invalid-name --disable=missing-docstring --disable=bad-indentation --disable=line-too-long --disable=too-few-public-methods --disable=trailing-whitespace {} \;
+	find ./test -iname "*.py" -print -exec pylint --disable=invalid-name --disable=missing-docstring --disable=bad-indentation --disable=line-too-long --disable=too-few-public-methods --disable=protected-access --disable=trailing-whitespace {} \;
 
 create_db:
 	python3 database/setup.py

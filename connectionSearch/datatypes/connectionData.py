@@ -1,7 +1,8 @@
 from typing import List
+from dataclasses import dataclass
+
 from connectionSearch.datatypes.stopName import StopName
 from connectionSearch.datatypes.time import Time
-from dataclasses import dataclass
 
 @dataclass
 class ConnectionData:

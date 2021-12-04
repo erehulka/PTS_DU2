@@ -2,7 +2,7 @@
 
 To install requirements, run
 
-    pip install -r requirements.txt
+    pip3 install -r requirements.txt
 
 Then to setup database, run
 
