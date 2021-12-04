@@ -1,2 +1,5 @@
-sqlalchemy
 mypy
+sqlalchemy
+sqlalchemy[mypy]
+sqlalchemy-utils
+pylint
